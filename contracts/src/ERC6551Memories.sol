@@ -20,24 +20,17 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
         uint256 id;
         address creator;
         string name;
-        string description;
-        string memoryThumbnailIpfsHash;
+        uint256 tokenId;
         address tbaAddress;
-        string[] itemsIpfsHashes;
-        uint256 totalDonationsAmount;
     }
 
     mapping(uint256 => Memory) public _memories;
 
     function createMemory(
         string memory _name,
-        string memory _description,
-        string memory _memoryThumbnailIpfsHash,
         string memory _uri
     ) public {
         require(bytes(_name).length > 0, "Please insert a name");
-        require(bytes(_description).length > 0, "Please insert a description");
-        require(bytes(_memoryThumbnailIpfsHash).length > 0, "Please insert a thumbnail");
         require(bytes(_uri).length > 0, "Please insert a URI");
 
         uint256 tokenId = _tokenIdCounter.current();
@@ -65,10 +58,8 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
         newMemory.id = numOfMemories;
         newMemory.creator = msg.sender;
         newMemory.name = _name;
-        newMemory.description = _description;
-        newMemory.memoryThumbnailIpfsHash = _memoryThumbnailIpfsHash;
+        newMemory.tokenId = tokenId;
         newMemory.tbaAddress = _tbaAddress;
-        newMemory.totalDonationsAmount = 0;
 
         numOfMemories++;
     }
@@ -90,51 +81,26 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
 
         ERC721 item = ERC721(address(this));
         item.safeTransferFrom(msg.sender, _memory.tbaAddress, tokenId); 
-
-        _memory.itemsIpfsHashes.push(_itemIpfsHash);
     }
 
-    function donateToMemory(
-        uint256 _id
-    ) payable public {
+    function donateToMemory(uint256 _id) payable public {
         Memory storage _memory = _memories[_id];
 
         require(msg.value <= msg.sender.balance, "insufficient funds");
 
         (bool success, ) = _memory.tbaAddress.call{value: msg.value, gas: 2300}("");
         require(success, "Transfer to creator failed");
-
-        _memory.totalDonationsAmount += msg.value;
     }
 
-    // View functions
+    function getMemories() public view returns (Memory[] memory) {
+        Memory[] memory allMemories = new Memory[](numOfMemories);
 
-    function getNumOfMemories() public view returns (uint256) {
-        return numOfMemories;
-    }
-
-    function getMemory(uint256 _id) public view returns (
-        uint256,
-        address,
-        string memory,
-        string memory, 
-        string memory,
-        address,
-        string[] memory,
-        uint256
-    ){
-        Memory storage _memory = _memories[_id];
-
-        return (
-            _memory.id,
-            _memory.creator,
-            _memory.name,
-            _memory.description,
-            _memory.memoryThumbnailIpfsHash,
-            _memory.tbaAddress,
-            _memory.itemsIpfsHashes,
-            _memory.totalDonationsAmount
-        );
+        for (uint256 i = 0; i < numOfMemories; ++i) {
+            Memory storage item = _memories[i];
+            allMemories[i] = item;
+        }
+        
+        return allMemories;
     }
 
     // The following functions are overrides required by Solidity.
