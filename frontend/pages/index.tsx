@@ -4,7 +4,7 @@ import Memories from "../components/Memories";
 const Home = () => {
   return (
     <div>
-      <Navbar /> 
+      <Navbar linkHref={'/create'} linkText={'Create Memory'}/> 
       <Memories />
     </div>
   );
