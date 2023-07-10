@@ -7,7 +7,6 @@ import Loading from "../../components/Loading";
 
 
 interface MemoryCardProps {
-  contractAddress: string;
   creator: string;
 }
 
@@ -24,7 +23,7 @@ const Memory: React.FC<MemoryCardProps> = () => {
   return (
     <div>
         <Navbar linkHref={'/'} linkText={'Back to home'}/> 
-        <div className='flex flex-row items-center justify-center'>
+        <div className='flex flex-row items-center justify-center mt-16'>
             <div className='flex flex-col items-start justify-start'>
                 <ThirdwebNftMedia 
                     metadata={nft.metadata} 
