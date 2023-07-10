@@ -10,7 +10,7 @@ import abi from '../constants/ERC6551Memories.json';
 const Create = () => {
   const router = useRouter(); 
 
-  const contractAddress = '0xa1D7721554624E67c91c9BC41B5BC230EE197Dec';
+  const contractAddress = '0x27D47CdCd5dBD03c7848C63Fc4B28dE1FB9aA20B';
   const contractAbi = abi.abi;
   const { contract } = useContract(contractAddress, contractAbi);
   const { mutateAsync: createMemory } = useContractWrite(contract, "createMemory");

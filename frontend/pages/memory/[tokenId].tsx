@@ -14,7 +14,7 @@ const Memory: React.FC<MemoryCardProps> = () => {
   const router = useRouter();
   const { tokenId } = router.query; 
 
-  const { contract } = useContract('0xa1D7721554624E67c91c9BC41B5BC230EE197Dec', abi.abi);
+  const { contract } = useContract('0x27D47CdCd5dBD03c7848C63Fc4B28dE1FB9aA20B', abi.abi);
   const { data: nft, isLoading, error } = useNFT(contract, String(tokenId));
 
   if (isLoading) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'><Loading /></div>;

@@ -5,10 +5,12 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "@reference/src/lib/ERC6551AccountLib.sol";
 
 contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
+    using SafeMath for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
     constructor() ERC721("erc6551-memories", "E6M") {}
@@ -90,6 +92,11 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
         }
         
         return allMemories;
+    }
+
+    function getIndividualMemory(uint256 _tokenId) public pure returns (Memory[] memory) {
+        Memory[] memory _memory = new Memory[](_tokenId);
+        return _memory;
     }
 
     // The following functions are overrides required by Solidity.
