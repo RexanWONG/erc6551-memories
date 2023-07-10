@@ -1,19 +1,26 @@
 import { useState } from 'react';
-import { NFTStorage } from 'nft.storage';
-import { Web3Button, useContractWrite, useContract } from "@thirdweb-dev/react";
 import { useRouter } from 'next/router';
+import { NFTStorage } from 'nft.storage';
+import { Web3Button, useAddress, useContractWrite, useContract, useNFT } from "@thirdweb-dev/react";
 
-import Navbar from '../components/Navbar';
-import Loading from '../components/Loading';
-import abi from '../constants/ERC6551Memories.json';
+import Navbar from '../../components/Navbar';
+import Loading from '../../components/Loading';
+import itemsAbi from '../../constants/ERC6551MemoriesItems.json';
 
-const Create = () => {
+const AddItem = () => {
   const router = useRouter(); 
+  const { tokenId } = router.query; 
 
-  const contractAddress = '0xE6b5EFc893c69f0844A1A9b66EA50eFc6CEBa7f5';
-  const contractAbi = abi.abi;
-  const { contract } = useContract(contractAddress, contractAbi);
-  const { mutateAsync: createMemory } = useContractWrite(contract, "createMemory");
+  const itemsContractAddress = '0xC1141d65B3eA5303bFc58453B1dc3A58Fb87af0f';
+  const itemsABI = itemsAbi.abi;
+
+  const { contract } = useContract(itemsContractAddress, itemsABI);
+
+  const address = useAddress();
+
+  const { data: nft, isLoading: nftLoading, error: nftError } = useNFT(contract, String(tokenId));
+
+  const { mutateAsync: safeMint } = useContractWrite(contract, "safeMint");
 
   const NFT_STORAGE_TOKEN = process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN;
   const client = new NFTStorage({ token: NFT_STORAGE_TOKEN });
@@ -62,28 +69,31 @@ const Create = () => {
     }
   };
 
-  const handleCreateMemory = async () => {
+  const handleSafeMint = async () => {
     try {
-      await createMemory({ args: [inputValue.metadataURI] });
-      alert("Memory Created!") 
-      router.push('/')
+      await safeMint({ args: [address, inputValue.metadataURI] });
+      alert("Minted Item") 
     } catch (error) {
       console.error(error)
     }
   }
 
+  if (!address) return <div>No wallet connected</div>
+  if (nftLoading) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'><Loading /></div>;
+  if (nftError || !nft) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'>NFT not found</div>;
+  
   return (
     <div>
-        <Navbar linkHref={'/'} linkText={'Back to home'}/> 
+        <Navbar linkHref={`/memory/${tokenId}`} linkText={'Back to memory info'}/> 
         <div className='flex flex-col items-start justify-start p-10'>
-            <h1 className='text-4xl font-bold'>Create Memory</h1>
+            <h1 className='text-4xl font-bold'>Add Item</h1>
 
             <div className='flex flex-row items-center justify-center gap-20'>
               <div className='flex flex-col'>
                 <form className='mt-16'>
                   <div className='mb-10'>
                     <label className='text-2xl font-semibold'>
-                      Upload thumbnail image
+                      Upload image
                     </label>
                     <input
                       type="file"
@@ -96,7 +106,7 @@ const Create = () => {
 
                   <div className='mb-10'>
                     <label className='text-2xl font-semibold'>
-                      Memory name
+                      Item name
                     </label>
                     <input
                       type="text"
@@ -111,7 +121,7 @@ const Create = () => {
 
                   <div className='mb-10'>
                     <label className='text-2xl font-semibold'>
-                      Memory Description
+                      Item Description
                     </label>
                     <input
                       type="text"
@@ -164,10 +174,10 @@ const Create = () => {
               {isMetadataURICreated && (
                 <Web3Button
                   theme="light"
-                  contractAddress={contractAddress}
-                  action={handleCreateMemory}
+                  contractAddress={itemsContractAddress}
+                  action={handleSafeMint}
                 >
-                  Create memory!
+                  Mint Item!
                 </Web3Button>
               )}
             </div>
@@ -177,4 +187,4 @@ const Create = () => {
   )
 }
 
-export default Create
+export default AddItem

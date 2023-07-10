@@ -59,25 +59,22 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
 
     function addItemToMemory(
         uint256 _tokenId, 
-        string memory _uri
+        address _contractAddress,
+        uint256 _itemTokenId
     ) public {
-        require(bytes(_uri).length > 0, "Please insert a URI");
+        ERC721 item = ERC721(_contractAddress);
+        require(_memories[_tokenId].creator == msg.sender, "Caller must be the creator of the memory");
+        require(item.ownerOf(_itemTokenId) == msg.sender, "Caller must be the creator of the item");
+        require(_contractAddress == address(0xC1141d65B3eA5303bFc58453B1dc3A58Fb87af0f), "Must be contract address of the items");
 
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, _uri);
-
-        Memory storage _memory = _memories[_tokenId];
-
-        ERC721 item = ERC721(address(this));
-        item.safeTransferFrom(msg.sender, _memory.tbaAddress, tokenId); 
+        item.safeTransferFrom(msg.sender, _memories[_tokenId].tbaAddress, _itemTokenId); 
     }
 
     function donateToMemory(uint256 _tokenId) payable public {
         Memory storage _memory = _memories[_tokenId];
 
         require(msg.value <= msg.sender.balance, "insufficient funds");
+        require(_memories[_tokenId].creator == msg.sender, "Caller must be the creator of the memory");
 
         (bool success, ) = _memory.tbaAddress.call{value: msg.value, gas: 2300}("");
         require(success, "Transfer to creator failed");
