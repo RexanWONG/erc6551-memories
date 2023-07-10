@@ -15,6 +15,7 @@
     "@thirdweb-dev/sdk": "^3",
     "ethers": "^5",
     "next": "^13",
+    "nft.storage": "^7.1.0",
     "react": "^18.2",
     "react-dom": "^18.2"
   },
