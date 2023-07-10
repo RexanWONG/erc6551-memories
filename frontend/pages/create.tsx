@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { NFTStorage } from 'nft.storage';
 import { Web3Button, useContractWrite, useContract } from "@thirdweb-dev/react";
+import { useRouter } from 'next/navigation';
 
 import Navbar from '../components/Navbar';
 import Loading from '../components/Loading';
 import abi from '../constants/ERC6551Memories.json';
 
 const Create = () => {
-  const contractAddress = '0xf2FEdF758Cf18192eec851BA02382347921e7873';
+  const router = useRouter(); 
+
+  const contractAddress = '0x5042f2e43dCbD88bD530Bd07438c05e93C50666f';
   const contractAbi = abi.abi;
   const { contract } = useContract(contractAddress, contractAbi);
   const { mutateAsync: createMemory } = useContractWrite(contract, "createMemory");
@@ -17,6 +20,7 @@ const Create = () => {
 
   const [inputValue, setInputValue] = useState({
     name: "",
+    description: "",
     metadataURI: ""
   });
 
@@ -45,7 +49,7 @@ const Create = () => {
       
       const metadata = await client.store({
         name: inputValue.name,
-        description: "This is a memory!",
+        description: inputValue.description,
         image: selectedImage
       })
       
@@ -60,8 +64,9 @@ const Create = () => {
 
   const handleCreateMemory = async () => {
     try {
-      await createMemory({ args: [inputValue.name, inputValue.metadataURI] });
-      console.log("Done")
+      await createMemory({ args: [inputValue.metadataURI] });
+      alert("Memory Created!") 
+      router.push('/')
     } catch (error) {
       console.error(error)
     }
@@ -76,6 +81,19 @@ const Create = () => {
             <div className='flex flex-row items-center justify-center gap-20'>
               <div className='flex flex-col'>
                 <form className='mt-16'>
+                  <div className='mb-10'>
+                    <label className='text-2xl font-semibold'>
+                      Upload thumbnail image
+                    </label>
+                    <input
+                      type="file"
+                      onChange={handleImageChange}
+                      className="border border-gray-400 p-2 rounded-md w-full outline-none mt-2"
+                      name="image"
+                      required
+                    />
+                  </div>
+
                   <div className='mb-10'>
                     <label className='text-2xl font-semibold'>
                       Memory name
@@ -93,16 +111,19 @@ const Create = () => {
 
                   <div className='mb-10'>
                     <label className='text-2xl font-semibold'>
-                      Upload Image
+                      Memory Description
                     </label>
                     <input
-                      type="file"
-                      onChange={handleImageChange}
+                      type="text"
+                      onChange={handleInputChange}
                       className="border border-gray-400 p-2 rounded-md w-full outline-none mt-2"
-                      name="image"
+                      placeholder="This is a memory!"
+                      name="description"
+                      value={inputValue.description}
                       required
                     />
                   </div>
+
                 </form>
 
                 <div>
@@ -121,8 +142,12 @@ const Create = () => {
                         className="h-64 w-64 object-contain mt-4" />
                     )}
 
-                    <h1 className='text-5xl'>{inputValue.name}</h1>
+                    <div className='flex flex-col'>
+                      <h1 className='text-5xl'>{inputValue.name}</h1>
+                      <p className='mt-5'>{inputValue.description}</p>
+                    </div>
                 </div>
+                
                 {isLoading ? (
                    <div className='flex flex-row items-center justify-start gap-5'>
                     <Loading />

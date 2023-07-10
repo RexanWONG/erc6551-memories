@@ -5,7 +5,7 @@ import abi from '../constants/ERC6551Memories.json'
 import MemoryCard from './MemoryCard';
 
 const Memories = () => {
-  const contractAddress = '0xf2FEdF758Cf18192eec851BA02382347921e7873';
+  const contractAddress = '0x5042f2e43dCbD88bD530Bd07438c05e93C50666f';
   const { contract } = useContract(contractAddress, abi.abi);
   const { data, isLoading, error } = useContractRead(contract, "getMemories");
   
@@ -30,9 +30,9 @@ const Memories = () => {
             <MemoryCard 
               key={index} 
               contractAddress={contractAddress} 
-              tokenId={memory[3]} 
-              creator={memory[1]}
-              tbaAddress={memory[4]}
+              tokenId={memory.tokenId} 
+              creator={memory.creator}
+              tbaAddress={memory.tbaAddress}
             />
           )}
         </div>

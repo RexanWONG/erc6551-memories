@@ -1,12 +1,12 @@
 import type { AppProps } from "next/app";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import { Sepolia } from "@thirdweb-dev/chains";
+import { Goerli } from "@thirdweb-dev/chains";
 
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider activeChain={Sepolia}>
+    <ThirdwebProvider activeChain={Goerli}>
       <Component {...pageProps} />
     </ThirdwebProvider>
   );

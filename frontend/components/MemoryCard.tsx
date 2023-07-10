@@ -1,5 +1,4 @@
 import { ThirdwebNftMedia, useContract, useNFT } from "@thirdweb-dev/react";
-import truncateEthAddress from "truncate-eth-address";
 
 import abi from "../constants/ERC6551Memories.json";
 import Loading from "./Loading";
@@ -30,8 +29,8 @@ const MemoryCard: React.FC<MemoryCardProps> = ({ contractAddress, tokenId, creat
         <div className='flex-1 flex flex-col'>
           <p className="text-[12px]">
             <span className="text-gray-500">
-              <p>Creator : {truncateEthAddress(creator)}</p>
-              <p>TBA address : {truncateEthAddress(tbaAddress)}</p>
+              <p>Creator : {(creator)}</p>
+              <p>TBA address : {(tbaAddress)}</p>
               <p className="mt-[2px]">Token ID: {tokenId.toString()}</p>
             </span>
           </p>
