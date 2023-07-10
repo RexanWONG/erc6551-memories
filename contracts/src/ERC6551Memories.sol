@@ -19,18 +19,13 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
     struct Memory {
         uint256 id;
         address creator;
-        string name;
         uint256 tokenId;
         address tbaAddress;
     }
 
     mapping(uint256 => Memory) public _memories;
 
-    function createMemory(
-        string memory _name,
-        string memory _uri
-    ) public {
-        require(bytes(_name).length > 0, "Please insert a name");
+    function createMemory(string memory _uri) public {
         require(bytes(_uri).length > 0, "Please insert a URI");
 
         uint256 tokenId = _tokenIdCounter.current();
@@ -57,7 +52,6 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
 
         newMemory.id = numOfMemories;
         newMemory.creator = msg.sender;
-        newMemory.name = _name;
         newMemory.tokenId = tokenId;
         newMemory.tbaAddress = _tbaAddress;
 
