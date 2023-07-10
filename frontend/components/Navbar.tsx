@@ -2,7 +2,12 @@ import React from 'react'
 import { ConnectWallet } from "@thirdweb-dev/react";
 import Link from 'next/link'
 
-const Navbar = ({ linkHref, linkText }) => {
+interface NavbarProps {
+  linkHref: string;
+  linkText: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ linkHref, linkText }) => {
   return (
     <nav className="flex items-center justify-between p-5">
         <div>

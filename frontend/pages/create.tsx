@@ -1,26 +1,36 @@
 import { useState } from 'react';
+import { NFTStorage } from 'nft.storage';
+import { Web3Button, useContractWrite, useContract } from "@thirdweb-dev/react";
+
 import Navbar from '../components/Navbar';
-import { NFTStorage } from 'nft.storage'
 import Loading from '../components/Loading';
+import abi from '../constants/ERC6551Memories.json';
 
 const Create = () => {
-  const NFT_STORAGE_TOKEN = process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN
-  const client = new NFTStorage({ token: NFT_STORAGE_TOKEN })
+  const contractAddress = '0xf2FEdF758Cf18192eec851BA02382347921e7873';
+  const contractAbi = abi.abi;
+  const { contract } = useContract(contractAddress, contractAbi);
+  const { mutateAsync: createMemory } = useContractWrite(contract, "createMemory");
+
+  const NFT_STORAGE_TOKEN = process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN;
+  const client = new NFTStorage({ token: NFT_STORAGE_TOKEN });
 
   const [inputValue, setInputValue] = useState({
     name: "",
+    metadataURI: ""
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
-  const [metadataURI, setMetadataURI] = useState('')
+  const [isMetadataURICreated, setIsMetadataURICreated] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false)
+
 
   const handleInputChange = (event) => {
     setInputValue((prevFormData) => ({
       ...prevFormData,
       [event.target.name]: event.target.value,
-    }));
+    }));    
   };
 
   const handleImageChange = (event) => {
@@ -30,7 +40,8 @@ const Create = () => {
 
   const createMetadataURI = async () => {
     try {
-      setIsLoading(true); 
+      setIsLoading(true)
+      setIsMetadataURICreated(false)
       
       const metadata = await client.store({
         name: inputValue.name,
@@ -38,18 +49,27 @@ const Create = () => {
         image: selectedImage
       })
       
-      setMetadataURI(metadata.url);
+      inputValue.metadataURI = metadata.url
+      setIsLoading(false)
     } catch (error) {
       alert('Error with creating metadata', error);
     } finally {
-      setIsLoading(false); // Set isLoading back to false after the API call completes
+      setIsMetadataURICreated(true) 
     }
   };
+
+  const handleCreateMemory = async () => {
+    try {
+      await createMemory({ args: [inputValue.name, inputValue.metadataURI] });
+      console.log("Done")
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div>
         <Navbar linkHref={'/'} linkText={'Back to home'}/> 
-
         <div className='flex flex-col items-start justify-start p-10'>
             <h1 className='text-4xl font-bold'>Create Memory</h1>
 
@@ -110,12 +130,21 @@ const Create = () => {
                    </div>
 
                 ) : (
-                  <h1 className='text-2xl'>{metadataURI}</h1>
+                  <h1 className='text-2xl'>{inputValue.metadataURI}</h1>
                 )}
 
               </div>
-              
-
+            </div>
+            <div className='mt-16'>
+              {isMetadataURICreated && (
+                <Web3Button
+                  theme="light"
+                  contractAddress={contractAddress}
+                  action={handleCreateMemory}
+                >
+                  Create memory!
+                </Web3Button>
+              )}
             </div>
         </div>
     </div>
