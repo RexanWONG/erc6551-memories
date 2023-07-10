@@ -4,12 +4,11 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "@reference/src/lib/ERC6551AccountLib.sol";
 
-contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
+contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
     constructor() ERC721("erc6551-memories", "E6M") {}
@@ -17,7 +16,6 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
     uint256 numOfMemories;
 
     struct Memory {
-        uint256 id;
         address creator;
         uint256 tokenId;
         address tbaAddress;
@@ -35,7 +33,7 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
 
         address registry = 0x02101dfB77FDE026414827Fdc604ddAF224F0921;
         address implementation = 0x2D25602551487C3f3354dD80D76D54383A243358;
-        uint256 chainId = 11155111; // Sepolia
+        uint256 chainId = 5; // Goerli
         address tokenContract = address(this);
         uint salt = 0;    
 
@@ -50,7 +48,6 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
 
         Memory storage newMemory = _memories[numOfMemories];
 
-        newMemory.id = numOfMemories;
         newMemory.creator = msg.sender;
         newMemory.tokenId = tokenId;
         newMemory.tbaAddress = _tbaAddress;
@@ -59,26 +56,24 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable 
     }
 
     function addItemToMemory(
-        uint256 _id, 
-        string memory _uri,
-        string memory _itemIpfsHash
+        uint256 _tokenId, 
+        string memory _uri
     ) public {
         require(bytes(_uri).length > 0, "Please insert a URI");
-        require(bytes(_itemIpfsHash).length > 0, "Please insert an item ipfs hash");
 
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, _uri);
 
-        Memory storage _memory = _memories[_id];
+        Memory storage _memory = _memories[_tokenId];
 
         ERC721 item = ERC721(address(this));
         item.safeTransferFrom(msg.sender, _memory.tbaAddress, tokenId); 
     }
 
-    function donateToMemory(uint256 _id) payable public {
-        Memory storage _memory = _memories[_id];
+    function donateToMemory(uint256 _tokenId) payable public {
+        Memory storage _memory = _memories[_tokenId];
 
         require(msg.value <= msg.sender.balance, "insufficient funds");
 
