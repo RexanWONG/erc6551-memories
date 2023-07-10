@@ -10,7 +10,7 @@ import abi from '../constants/ERC6551Memories.json';
 const Create = () => {
   const router = useRouter(); 
 
-  const contractAddress = '0x27D47CdCd5dBD03c7848C63Fc4B28dE1FB9aA20B';
+  const contractAddress = '0xC14c22fD299148D3987C04e37F5ae296D0405e09';
   const contractAbi = abi.abi;
   const { contract } = useContract(contractAddress, contractAbi);
   const { mutateAsync: createMemory } = useContractWrite(contract, "createMemory");
@@ -149,13 +149,13 @@ const Create = () => {
                 </div>
 
                 {isLoading ? (
-                   <div className='flex flex-row items-center justify-start gap-5'>
+                   <div className='flex flex-row items-center justify-start gap-5 mt-5'>
                     <Loading />
                     <h1>Creating metadata URI...</h1>
                    </div>
 
                 ) : (
-                  <h1 className='text-2xl'>{inputValue.metadataURI}</h1>
+                  <h1 className='text-2xl mt-5'>{inputValue.metadataURI}</h1>
                 )}
 
               </div>

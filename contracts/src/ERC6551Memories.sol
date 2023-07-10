@@ -94,9 +94,12 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
         return allMemories;
     }
 
-    function getIndividualMemory(uint256 _tokenId) public pure returns (Memory[] memory) {
-        Memory[] memory _memory = new Memory[](_tokenId);
-        return _memory;
+    function getIndividualMemory(uint256 _tokenId) public view returns (address, uint256, address) {
+        return (
+           _memories[_tokenId].creator,
+           _memories[_tokenId].tokenId,
+           _memories[_tokenId].tbaAddress
+        );
     }
 
     // The following functions are overrides required by Solidity.

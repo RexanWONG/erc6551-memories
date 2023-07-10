@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { ThirdwebNftMedia, useContract, useNFT } from "@thirdweb-dev/react";
+import { ThirdwebNftMedia, useContract, useContractRead, useNFT } from "@thirdweb-dev/react";
+import truncateEthAddress from 'truncate-eth-address'
 
 import abi from "../../constants/ERC6551Memories.json";
 import Navbar from '../../components/Navbar';
@@ -11,11 +12,22 @@ interface MemoryCardProps {
 }
 
 const Memory: React.FC<MemoryCardProps> = () => {
+  const contractAddress = '0xC14c22fD299148D3987C04e37F5ae296D0405e09';
+
   const router = useRouter();
   const { tokenId } = router.query; 
 
-  const { contract } = useContract('0x27D47CdCd5dBD03c7848C63Fc4B28dE1FB9aA20B', abi.abi);
+  const { contract } = useContract(contractAddress, abi.abi);
+  const { data: memory } = 
+    tokenId !== undefined ? useContractRead(contract, "getIndividualMemory", [tokenId]) : { data: null };
+
   const { data: nft, isLoading, error } = useNFT(contract, String(tokenId));
+
+  const getMemory = () => {
+    console.log("Memory", memory)
+  }
+  
+  
 
   if (isLoading) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'><Loading /></div>;
   if (error || !nft) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'>NFT not found</div>;
@@ -32,8 +44,11 @@ const Memory: React.FC<MemoryCardProps> = () => {
                     height={650} 
                     className='w-full object-cover rounded-lg border-2 border-gray-400' 
                 />
-                <h1 className='text-3xl text-gray-800 font-extrabold  text-left leading-[26px] truncate mt-3'>{nft.metadata.name}</h1>
                 
+                <h1 className="text-3xl text-gray-800 font-extrabold text-left leading-[26px] mt-3">
+                  {nft.metadata.name}{" "}
+                  <span className="text-gray-400 text-[20px] font-light">by {truncateEthAddress(memory[0])}</span>
+                </h1>
             </div>
             
         </div>
