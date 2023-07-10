@@ -1,6 +1,7 @@
-// Memories.tsx
 import { useEffect, useState } from 'react';
 import { useContract, useContractRead } from "@thirdweb-dev/react";
+import Link from 'next/link';
+
 import abi from '../constants/ERC6551Memories.json'
 import MemoryCard from './MemoryCard';
 
@@ -27,13 +28,15 @@ const Memories = () => {
         <h1 className='text-4xl font-bold'>View Memories</h1>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6'>
           {listOfMemories.map((memory, index) => 
-            <MemoryCard 
-              key={index} 
-              contractAddress={contractAddress} 
-              tokenId={memory.tokenId} 
-              creator={memory.creator}
-              tbaAddress={memory.tbaAddress}
-            />
+            <Link href={`/memory/${memory.tokenId}`}>
+              <MemoryCard 
+                key={index} 
+                contractAddress={contractAddress} 
+                tokenId={memory.tokenId} 
+                creator={memory.creator}
+                tbaAddress={memory.tbaAddress}
+              />
+            </Link>
           )}
         </div>
     </div>

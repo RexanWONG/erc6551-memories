@@ -7,6 +7,7 @@ interface MemoryCardProps {
   contractAddress: string;
   tokenId: string;
   creator: string;
+  tbaAddress: string;
 }
 
 const MemoryCard: React.FC<MemoryCardProps> = ({ contractAddress, tokenId, creator, tbaAddress }) => {

@@ -56,7 +56,7 @@ const Create = () => {
       inputValue.metadataURI = metadata.url
       setIsLoading(false)
     } catch (error) {
-      alert('Error with creating metadata', error);
+      alert('Error with creating metadata');
     } finally {
       setIsMetadataURICreated(true) 
     }
