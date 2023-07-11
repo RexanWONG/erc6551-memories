@@ -31,9 +31,9 @@ const Memory = () => {
                 <ThirdwebNftMedia 
                     metadata={nft.metadata} 
                     controls={true} 
-                    width={650} 
-                    height={650} 
-                    className='w-full object-cover rounded-lg border-2 border-gray-400' 
+                    width={String(650)}
+                    height={String(650)} 
+                    className='w-200 object-cover rounded-lg border-2 border-gray-400' 
                 />
 
                 <h1 className="text-3xl text-gray-800 font-extrabold text-left leading-[26px] mt-3">
