@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAddress, useContractWrite, useContract } from "@thirdweb-dev/react";
+import { useAddress, useContractRead, useContractWrite, useContract } from "@thirdweb-dev/react";
 
 import Navbar from '../../components/Navbar';
 import itemsAbi from '../../constants/ERC6551MemoriesItems.json';
@@ -15,12 +16,16 @@ const AddItem = () => {
 
   const address = useAddress();
   const { contract } = useContract(itemsContractAddress, itemsABI);
+
+  const { data: itemTokenId, isLoading, error } = useContractRead(contract, "getTokenIdByAddress", [address]);
+  
   const { mutateAsync: mintItem } = useContractWrite(contract, "mintItem");
 
   const handleMintItem = async (metadataURI: string) => {
     try {
       await mintItem({ args: [metadataURI] });
       alert("Minted Item") 
+      console.log("Token ID : ", itemTokenId);
     } catch (error) {
       console.error(error)
     }
@@ -37,10 +42,15 @@ const AddItem = () => {
             <MintNFTForm 
               contractAddress={itemsContractAddress}
               web3ButtonText={'Add Item!'}
-              web3ButtonFunction={() => handleMintItem}
+              web3ButtonFunction={handleMintItem}
             />
 
-            {/* <AddItemAfterMinted tokenId={tokenId} itemTokenId={} */}
+            <div className='mt-16'>
+              <AddItemAfterMinted 
+                tokenId={Number(tokenId)} 
+                itemTokenId={Number(itemTokenId)} 
+              />
+            </div>
         </div>
     </div>
   )
