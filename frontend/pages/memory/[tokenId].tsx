@@ -28,13 +28,12 @@ const Memory = () => {
         <Navbar linkHref={'/'} linkText={'Back to home'}/> 
         <div className='flex flex-row items-center justify-center gap-16 mt-16'>
             <div className='flex flex-col items-start justify-start'>
-                <ThirdwebNftMedia 
-                    metadata={nft.metadata} 
-                    controls={true} 
-                    width={String(650)}
-                    height={String(650)} 
-                    className='w-200 object-cover rounded-lg border-2 border-gray-400' 
-                />
+            <ThirdwebNftMedia 
+                metadata={nft.metadata} 
+                controls={true} 
+                className="!md:h-96 !md:w-96 !h-full !max-h-[800px] !w-full !max-w-[800px] !rounded-lg !object-cover"
+            />
+
 
                 <h1 className="text-3xl text-gray-800 font-extrabold text-left leading-[26px] mt-3">
                   {nft.metadata.name}{" "}

@@ -18,8 +18,11 @@ const MemoryCard: React.FC<MemoryCardProps> = ({ contractAddress, tokenId, creat
   if (error || !nft) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'>NFT not found</div>;
 
   return (
-    <div className='transition-all duration-200 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden shadow-md bg-white border-2 border-gray-200'>
-      <ThirdwebNftMedia metadata={nft.metadata} controls={true} width={String(1000)} className='w-full object-cover' />
+    <div className='transition-all duration-200 ease-in-out transform hover:scale-105 rounded-2xl overflow-hidden shadow-md bg-white border-2 border-gray-200'>
+      <ThirdwebNftMedia 
+        metadata={nft.metadata} 
+        controls={true} 
+        className='className="!md:h-96 !md:w-96 !h-full !w-full !rounded-t-2xl !rounded-b-sm !object-cover"' />
 
       <div className="block p-4">
         <h3 className="font-extrabold text-[24px] text-gray-800 text-left leading-[26px] truncate">{nft.metadata.name}</h3>
