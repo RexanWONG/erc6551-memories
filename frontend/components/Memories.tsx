@@ -29,13 +29,13 @@ const Memories = () => {
         <h1 className='text-4xl font-bold'>View Memories</h1>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6'>
           {listOfMemories.map((memory, index) => 
-            <Link href={`/memory/${memory.tokenId}`}>
+            <Link href={`/memory/${memory[0]}`}>
               <MemoryCard 
                 key={index} 
                 contractAddress={contractAddress} 
-                tokenId={memory.tokenId} 
-                creator={memory.creator}
-                tbaAddress={memory.tbaAddress}
+                tokenId={memory[0]} 
+                creator={memory[1]}
+                tbaAddress={memory[2]}
               />
             </Link>
           )}
