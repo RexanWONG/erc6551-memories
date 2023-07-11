@@ -4,6 +4,7 @@ import { useAddress, useContractWrite, useContract } from "@thirdweb-dev/react";
 import Navbar from '../../components/Navbar';
 import itemsAbi from '../../constants/ERC6551MemoriesItems.json';
 import MintNFTForm from '../../components/MintNFTForm';
+import AddItemAfterMinted from '../../components/AddItemAfterMinted';
 
 const AddItem = () => {
   const router = useRouter(); 
@@ -14,11 +15,11 @@ const AddItem = () => {
 
   const address = useAddress();
   const { contract } = useContract(itemsContractAddress, itemsABI);
-  const { mutateAsync: safeMint } = useContractWrite(contract, "safeMint");
+  const { mutateAsync: mintItem } = useContractWrite(contract, "mintItem");
 
-  const handleAddItem = async (metadataURI: string) => {
+  const handleMintItem = async (metadataURI: string) => {
     try {
-      await safeMint({ args: [address, metadataURI] });
+      await mintItem({ args: [metadataURI] });
       alert("Minted Item") 
     } catch (error) {
       console.error(error)
@@ -36,8 +37,10 @@ const AddItem = () => {
             <MintNFTForm 
               contractAddress={itemsContractAddress}
               web3ButtonText={'Add Item!'}
-              web3ButtonFunction={() => handleAddItem}
+              web3ButtonFunction={() => handleMintItem}
             />
+
+            {/* <AddItemAfterMinted tokenId={tokenId} itemTokenId={} */}
         </div>
     </div>
   )
