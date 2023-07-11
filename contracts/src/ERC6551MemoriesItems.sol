@@ -16,10 +16,10 @@ contract ERC6551MemoriesItems is ERC721, ERC721Enumerable, ERC721URIStorage {
 
     event ItemMinted(uint256 indexed tokenId);
 
-    function mintItem(address to, string memory uri) public {
+    function mintItem(string memory uri) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
+        _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, uri);
 
         emit ItemMinted(tokenId);
