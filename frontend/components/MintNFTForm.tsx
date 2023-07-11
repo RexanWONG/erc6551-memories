@@ -22,7 +22,7 @@ const MintNFTForm: React.FC<MintNFTFormProps> = ({ contractAddress, web3ButtonTe
     metadataURI: ""
   });
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isMetadataURICreated, setIsMetadataURICreated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,25 +33,35 @@ const MintNFTForm: React.FC<MintNFTFormProps> = ({ contractAddress, web3ButtonTe
     }));    
   };
 
-  const handleImageChange = (event) => {
-    setSelectedImage(event.target.files[0]);
-  }
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if(event.target.files) {
+        setSelectedImage(event.target.files[0]);
+    }
+}
 
-  const createMetadataURI = async () => {
+const createMetadataURI = async () => {
     try {
       setIsLoading(true);
       setIsMetadataURICreated(false);
-      
-      const metadata = await client.store({
-        name: inputValue.name,
-        description: inputValue.description,
-        image: selectedImage
-      });
-      
-      inputValue.metadataURI = metadata.url;
-      setIsLoading(false);
+  
+      if (selectedImage) {
+        const metadata = await client.store({
+          name: inputValue.name,
+          description: inputValue.description,
+          image: selectedImage
+        });
+  
+        setInputValue((prev) => ({
+          ...prev,
+          metadataURI: metadata.url
+        }));
+  
+        setIsLoading(false);
+      } else {
+        throw new Error("No file selected!");
+      }
     } catch (error) {
-      alert('Error with creating metadata');
+      alert(`Error with creating metadata: ${error}`);
     } finally {
       setIsMetadataURICreated(true);
     }

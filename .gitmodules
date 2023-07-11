@@ -1,6 +1,0 @@
-[submodule "contracts/lib/openzeppelin-contracts"]
-	path = contracts/lib/openzeppelin-contracts
-	url = https://github.com/Openzeppelin/openzeppelin-contracts
-[submodule "contracts/lib/reference"]
-	path = contracts/lib/reference
-	url = https://github.com/erc6551/reference
