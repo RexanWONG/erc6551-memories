@@ -38,15 +38,15 @@ const Memory = () => {
 
                 <h1 className="text-3xl text-gray-800 font-extrabold text-left leading-[26px] mt-3">
                   {nft.metadata.name}{" "}
-                  <span className="text-gray-500 text-[20px] font-light">by {truncateEthAddress(memory[0])}</span>
+                  <span className="text-gray-500 text-[20px] font-light">by {truncateEthAddress(memory[1])}</span>
                 </h1>
             </div>
             
             <div className='flex flex-col items-start justify-start'>
                 <div className='flex flex-row items-center justify-center gap-32'>
                   <p className='text-gray-500 text-[20px]'>{truncateEthAddress(memory[2])}</p>
-                    {address === memory[0] ? (
-                      <Link href={`/additem/${memory[1]}`}>
+                    {address === memory[1] ? (
+                      <Link href={`/additem/${memory[0]}`}>
                         <button className="bg-black text-white hover:bg-neutral-600 font-light rounded-lg px-4 py-2">
                           Add item
                         </button>

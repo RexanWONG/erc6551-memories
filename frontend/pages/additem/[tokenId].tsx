@@ -16,7 +16,7 @@ const AddItem = () => {
   const { contract } = useContract(itemsContractAddress, itemsABI);
   const { mutateAsync: safeMint } = useContractWrite(contract, "safeMint");
 
-  const handleSafeMint = async (metadataURI: string) => {
+  const handleAddItem = async (metadataURI: string) => {
     try {
       await safeMint({ args: [address, metadataURI] });
       alert("Minted Item") 
@@ -26,7 +26,7 @@ const AddItem = () => {
   }
 
   if (!address) return <div>No wallet connected</div>
-  
+
   return (
     <div>
         <Navbar linkHref={`/memory/${tokenId}`} linkText={'Back to memory info'}/> 
@@ -36,7 +36,7 @@ const AddItem = () => {
             <MintNFTForm 
               contractAddress={itemsContractAddress}
               web3ButtonText={'Add Item!'}
-              web3ButtonFunction={() => handleSafeMint}
+              web3ButtonFunction={() => handleAddItem}
             />
         </div>
     </div>
