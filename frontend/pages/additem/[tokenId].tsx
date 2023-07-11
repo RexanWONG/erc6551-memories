@@ -40,7 +40,6 @@ const AddItem = () => {
             />
         </div>
     </div>
-    
   )
 }
 
