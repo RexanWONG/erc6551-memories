@@ -23,7 +23,6 @@ const Memory = () => {
   if (memoryLoading || nftLoading) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'><Loading /></div>;
   if (memoryError || nftError || !nft || !memory) return <div className='flex items-center justify-center h-64 bg-gray-200 rounded-lg'>NFT not found</div>;
 
-
   return (
     <div>
         <Navbar linkHref={'/'} linkText={'Back to home'}/> 
