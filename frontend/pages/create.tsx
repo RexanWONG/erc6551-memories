@@ -8,7 +8,7 @@ import MintNFTForm from '../components/MintNFTForm';
 const Create = () => {
   const router = useRouter(); 
 
-  const contractAddress = '0xE6b5EFc893c69f0844A1A9b66EA50eFc6CEBa7f5';
+  const contractAddress = '0xED377fE7104e5657BF3b8C5B2D0B8158332D641F';
   const contractAbi = abi.abi;
 
   const { contract } = useContract(contractAddress, contractAbi);
