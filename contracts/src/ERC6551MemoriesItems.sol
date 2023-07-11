@@ -16,13 +16,21 @@ contract ERC6551MemoriesItems is ERC721, ERC721Enumerable, ERC721URIStorage {
 
     event ItemMinted(uint256 indexed tokenId);
 
+    mapping(address => uint256) public addressToTokenId;
+
     function mintItem(string memory uri) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, uri);
 
+        addressToTokenId[msg.sender] = tokenId;
+
         emit ItemMinted(tokenId);
+    }
+
+    function getTokenIdByAddress(address _address) public view returns (uint256) {
+        return addressToTokenId[_address];
     }
 
     // The following functions are overrides required by Solidity.

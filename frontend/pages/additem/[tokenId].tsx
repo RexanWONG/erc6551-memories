@@ -10,7 +10,7 @@ const AddItem = () => {
   const router = useRouter(); 
   const { tokenId } = router.query; 
 
-  const itemsContractAddress = '0xf9aeD7e3e070F56c80F9801A18D96E2D684aE649';
+  const itemsContractAddress = '0x5F591d8Ac37D7B888dfa285bf0CE7904a2BEa6c8';
   const itemsABI = itemsAbi.abi;
 
   const address = useAddress();
