@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// Sepolia : 0x51B483f43e8Bd7D3404B662d7f735EcA22Fc3d41
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -7,30 +8,36 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
+import "./ERC6551Memories.sol";
+
 contract ERC6551MemoriesItems is ERC721, ERC721Enumerable, ERC721URIStorage {
+    ERC6551Memories public mainMemoriesContract;
+    
     using SafeMath for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("ERC6551-Memories-Items", "EMI") {}
-
-    event ItemMinted(uint256 indexed tokenId);
+    constructor() ERC721("ERC6551-Memories-Items", "EMI") {
+        mainMemoriesContract = ERC6551Memories(0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31);
+    }
 
     mapping(address => uint256) public addressToTokenId;
 
-    function mintItem(string memory uri) public {
+    function mintItem(string memory _uri) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, uri);
+        _setTokenURI(tokenId, _uri);
 
         addressToTokenId[msg.sender] = tokenId;
-
-        emit ItemMinted(tokenId);
     }
 
     function getTokenIdByAddress(address _address) public view returns (uint256) {
         return addressToTokenId[_address];
+    }
+
+    function getIndividualMemory(uint256 _tokenId) public view returns (uint256, address, address) {
+        return mainMemoriesContract.getIndividualMemory(_tokenId);
     }
 
     // The following functions are overrides required by Solidity.

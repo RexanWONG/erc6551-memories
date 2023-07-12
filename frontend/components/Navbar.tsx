@@ -10,9 +10,9 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ linkHref, linkText }) => {
   return (
     <nav className="flex items-center justify-between p-5">
-        <div>
+        <Link href={'/'}>
           <span className="text-2xl font-light">erc6551-memories</span>
-        </div>
+        </Link>
         <div className="flex items-center space-x-2">
             <Link href={linkHref}>
                 <button className="bg-black text-white hover:bg-neutral-600 font-light rounded-lg px-4 py-2">

@@ -8,7 +8,7 @@ import Loading from './Loading';
 interface MintNFTFormProps {
     contractAddress: string;
     web3ButtonText: string;
-    web3ButtonFunction: (metadataURI: string) => void;
+    web3ButtonFunction: (metadataURI: string, tokenId?: number) => void;
 }
 
 const MintNFTForm: React.FC<MintNFTFormProps> = ({ contractAddress, web3ButtonText, web3ButtonFunction }) => {

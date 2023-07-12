@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// Sepolia : 0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -14,25 +15,6 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
     constructor() ERC721("erc6551-memories", "E6M") {}
-
-    event MemoryCreated(
-        uint256 indexed tokenId, 
-        address indexed creator, 
-        address tbaAddress
-    );
-
-    event ItemAddedToMemory(
-        uint256 indexed tokenId, 
-        address indexed itemOwner,
-        address contractAddress, 
-        uint256 itemTokenId
-    );
-
-    event DonationReceived(
-        uint256 indexed tokenId, 
-        address indexed donor, 
-        uint256 amount
-    );
 
     struct Memory {
         uint256 tokenId;
@@ -57,24 +39,6 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
         newMemory.creator = msg.sender;
         newMemory.tokenId = tokenId;
         newMemory.tbaAddress = _tbaAddress;
-        
-        emit MemoryCreated(tokenId, msg.sender, _tbaAddress);
-    }
-
-    function addItemToMemory(
-        uint256 _tokenId, 
-        uint256 _itemTokenId
-    ) public {
-        address contractAddress = 0x5F591d8Ac37D7B888dfa285bf0CE7904a2BEa6c8;
-        ERC721 item = ERC721(contractAddress);
-
-        require(memories[_tokenId].creator == msg.sender, "Caller must be the creator of the memory");
-        require(item.ownerOf(_itemTokenId) == msg.sender, "Caller must be the creator of the item");
-
-        item.approve(msg.sender, _itemTokenId);
-        item.safeTransferFrom(msg.sender, memories[_tokenId].tbaAddress, _itemTokenId);
-        
-        emit ItemAddedToMemory(_tokenId, msg.sender, contractAddress, _itemTokenId);
     }
 
     function donateToMemory(uint256 _tokenId) payable public {
@@ -84,8 +48,6 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
 
         (bool success, ) = _memory.tbaAddress.call{value: msg.value, gas: 2300}("");
         require(success, "Transfer to creator failed");
-
-        emit DonationReceived(_tokenId, msg.sender, msg.value);
     }
 
     function _computeTbaAddress(uint256 tokenId) internal view returns (address) {

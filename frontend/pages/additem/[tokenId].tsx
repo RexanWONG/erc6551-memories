@@ -1,37 +1,43 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAddress, useContractRead, useContractWrite, useContract } from "@thirdweb-dev/react";
+import { useAddress, useContractRead, useContractWrite, useContract, useTransferNFT, Web3Button } from "@thirdweb-dev/react";
+import { useState, useEffect } from 'react';
 
 import Navbar from '../../components/Navbar';
-import itemsAbi from '../../constants/ERC6551MemoriesItems.json';
+import abi from '../../constants/ERC6551MemoriesItems.json';
 import MintNFTForm from '../../components/MintNFTForm';
-import AddItemAfterMinted from '../../components/AddItemAfterMinted';
 
 const AddItem = () => {
   const router = useRouter(); 
   const { tokenId } = router.query; 
 
-  const itemsContractAddress = '0x5F591d8Ac37D7B888dfa285bf0CE7904a2BEa6c8';
-  const itemsABI = itemsAbi.abi;
+  const contractAddress = '0x51B483f43e8Bd7D3404B662d7f735EcA22Fc3d41';
 
   const address = useAddress();
-  const { contract } = useContract(itemsContractAddress, itemsABI);
+  const { contract } = useContract(contractAddress, abi.abi);
 
   const { data: itemTokenId } = useContractRead(contract, "getTokenIdByAddress", [address]);
+  const { data: memoryDetails } = useContractRead(contract, "getIndividualMemory", [tokenId]);
   const { mutateAsync: mintItem } = useContractWrite(contract, "mintItem");
+  const {mutateAsync: transferNFT, isSuccess: isTransferSuccess} = useTransferNFT(contract);
 
   const [isItemMinted, setIsItemMinted] = useState(false)
-
+  
   const handleMintItem = async (metadataURI: string) => {
     try {
       await mintItem({ args: [metadataURI] });
-      console.log("Minted Item") 
-      console.log("Token ID : ", itemTokenId);
+      alert("Minted Item!")
       setIsItemMinted(true)
     } catch (error) {
-      console.error(error)
+      alert(error)
     }
   }
+
+  useEffect(() => {
+    if(isTransferSuccess) {
+      alert("Item added successfully!");
+      router.push(`/memory/${tokenId}`);
+    }
+  }, [isTransferSuccess, router]);
 
   if (!address) return <div>No wallet connected</div>
 
@@ -39,24 +45,36 @@ const AddItem = () => {
     <div>
         <Navbar linkHref={`/memory/${tokenId}`} linkText={'Back to memory info'}/> 
         <div className='flex flex-col items-start justify-start p-10'>
-            <h1 className='text-4xl font-bold'>Add Item</h1>
+            <h1 className='text-4xl font-bold'>Add Item to Memory</h1>
 
             <MintNFTForm 
-              contractAddress={itemsContractAddress}
-              web3ButtonText={'Add Item!'}
+              contractAddress={contractAddress}
+              web3ButtonText={'Mint Item'}
               web3ButtonFunction={handleMintItem}
             />
 
-            {isItemMinted ? (
-              <div className='mt-16'>
-                <AddItemAfterMinted 
-                  tokenId={Number(tokenId)} 
-                  itemTokenId={Number(itemTokenId)} 
-                />
+            <div className='mt-16'>
+              {isItemMinted ? (
+                <div className='flex flex-col'>
+                  <h1>Item's NFT Token ID : {Number(itemTokenId)}</h1>
+                  
+                  <Web3Button
+                    theme="light"
+                    contractAddress={contractAddress}
+                    action={() =>
+                      transferNFT({
+                        to: memoryDetails[2], 
+                        tokenId: Number(itemTokenId), 
+                      })
+                    }
+                  >
+                    Add Item! 
+                  </Web3Button>
+                </div>
+              ) : (
+                <h1>Once your item has been minted, you can add your item!</h1>
+              )}
             </div>
-            ) : (
-              <h1 className='mt-16'>Once your item has been minted, you can add it into the token-bound address!</h1>
-            )}
             
         </div>
     </div>

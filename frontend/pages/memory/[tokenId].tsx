@@ -11,7 +11,7 @@ const Memory = () => {
   const router = useRouter();
   const { tokenId } = router.query; 
 
-  const contractAddress = '0x1E897d2A2405dE2fa142056A6269DE7ee1c1433c';
+  const contractAddress = '0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31';
 
   const { contract } = useContract(contractAddress, abi.abi);
   const address = useAddress();
@@ -28,13 +28,12 @@ const Memory = () => {
         <Navbar linkHref={'/'} linkText={'Back to home'}/> 
         <div className='flex flex-row items-center justify-center gap-16 mt-16'>
             <div className='flex flex-col items-start justify-start'>
-            <ThirdwebNftMedia 
-                metadata={nft.metadata} 
-                controls={true} 
-                className="!md:h-96 !md:w-96 !h-full !max-h-[800px] !w-full !max-w-[800px] !rounded-lg !object-cover"
-            />
-
-
+                <ThirdwebNftMedia 
+                    metadata={nft.metadata} 
+                    controls={true} 
+                    className="!md:h-96 !md:w-96 !h-full !max-h-[800px] !w-full !max-w-[800px] !rounded-lg !object-cover"
+                />
+                
                 <h1 className="text-3xl text-gray-800 font-extrabold text-left leading-[26px] mt-3">
                   {nft.metadata.name}{" "}
                   <span className="text-gray-500 text-[20px] font-light">by {truncateEthAddress(memory[1])}</span>
