@@ -71,6 +71,7 @@ contract ERC6551Memories is ERC721, ERC721Enumerable, ERC721URIStorage {
         require(memories[_tokenId].creator == msg.sender, "Caller must be the creator of the memory");
         require(item.ownerOf(_itemTokenId) == msg.sender, "Caller must be the creator of the item");
 
+        item.approve(msg.sender, _itemTokenId);
         item.safeTransferFrom(msg.sender, memories[_tokenId].tbaAddress, _itemTokenId);
         
         emit ItemAddedToMemory(_tokenId, msg.sender, contractAddress, _itemTokenId);
