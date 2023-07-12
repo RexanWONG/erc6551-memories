@@ -11,7 +11,7 @@ const Memory = () => {
   const router = useRouter();
   const { tokenId } = router.query; 
 
-  const contractAddress = '0x2C9FFf3A8e4B06BC13e388798F857d7d14268B6F';
+  const contractAddress = '0x6696d0E4D89394A8aCAD839249Abe8B91F3055a2';
 
   const { contract } = useContract(contractAddress, abi.abi);
   const address = useAddress();

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAddress, useContractRead, useContractWrite, useContract } from "@thirdweb-dev/react";
 
@@ -17,15 +17,17 @@ const AddItem = () => {
   const address = useAddress();
   const { contract } = useContract(itemsContractAddress, itemsABI);
 
-  const { data: itemTokenId, isLoading, error } = useContractRead(contract, "getTokenIdByAddress", [address]);
-  
+  const { data: itemTokenId } = useContractRead(contract, "getTokenIdByAddress", [address]);
   const { mutateAsync: mintItem } = useContractWrite(contract, "mintItem");
+
+  const [isItemMinted, setIsItemMinted] = useState(false)
 
   const handleMintItem = async (metadataURI: string) => {
     try {
       await mintItem({ args: [metadataURI] });
-      alert("Minted Item") 
+      console.log("Minted Item") 
       console.log("Token ID : ", itemTokenId);
+      setIsItemMinted(true)
     } catch (error) {
       console.error(error)
     }
@@ -45,12 +47,17 @@ const AddItem = () => {
               web3ButtonFunction={handleMintItem}
             />
 
-            <div className='mt-16'>
-              <AddItemAfterMinted 
-                tokenId={Number(tokenId)} 
-                itemTokenId={Number(itemTokenId)} 
-              />
+            {isItemMinted ? (
+              <div className='mt-16'>
+                <AddItemAfterMinted 
+                  tokenId={Number(tokenId)} 
+                  itemTokenId={Number(itemTokenId)} 
+                />
             </div>
+            ) : (
+              <h1 className='mt-16'>Once your item has been minted, you can add it into the token-bound address!</h1>
+            )}
+            
         </div>
     </div>
   )
