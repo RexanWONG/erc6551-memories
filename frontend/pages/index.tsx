@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar"
-import Memories from "../components/Memories";
+import Memories from "./Memories";
 
 const Home = () => {
   return (

@@ -28,7 +28,7 @@ const AddItem = () => {
       alert("Minted Item!")
       setIsItemMinted(true)
     } catch (error) {
-      alert(error)
+      alert(error) 
     }
   }
 

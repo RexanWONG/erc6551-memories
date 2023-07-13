@@ -5,7 +5,7 @@ import Loading from "./Loading";
 
 interface MemoryCardProps {
   contractAddress: string;
-  tokenId: string;
+  tokenId: number;
   creator: string;
   tbaAddress: string;
 }

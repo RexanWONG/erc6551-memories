@@ -3,7 +3,7 @@ import { useContract, useContractRead } from "@thirdweb-dev/react";
 import Link from 'next/link';
 
 import abi from '../constants/ERC6551Memories.json'
-import MemoryCard from './MemoryCard';
+import MemoryCard from '../components/MemoryCard';
 
 const Memories = () => {
   const contractAddress = '0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31';
@@ -33,7 +33,7 @@ const Memories = () => {
               <MemoryCard 
                 key={index} 
                 contractAddress={contractAddress} 
-                tokenId={memory[0]} 
+                tokenId={Number(memory[0])} 
                 creator={memory[1]}
                 tbaAddress={memory[2]}
               />
