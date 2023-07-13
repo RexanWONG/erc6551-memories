@@ -8,9 +8,9 @@ interface Metadata {
     uri: string;
   }
   
-  interface MemoryItemsProps {
-    ownedItems: Array<{ metadata: Metadata; owner: string; supply: string; type: string }>;
-  }
+interface MemoryItemsProps {
+  ownedItems: Array<{ metadata: Metadata; owner: string; supply: string; type: string }>;
+}
   
 const MemoryItems: React.FC<MemoryItemsProps> = ({ ownedItems }) => {
   return (

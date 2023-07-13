@@ -34,7 +34,7 @@ const Memory = () => {
   useEffect(() => {
     if (data) {
       setMemoryDetails(data);
-      console.log("Owned items : ", ownedItems)
+      console.log("Owned items : ", ownedItems) 
     }
   }, [data]);
 
@@ -59,8 +59,7 @@ const Memory = () => {
                   <span className="text-gray-500 text-[20px] font-light">by {truncateEthAddress(memoryDetails[1])}</span>
                 </h1>
             </div> 
-            
-            
+
             <MemoryInfoSection 
               memoryTokenId={Number(tokenId)}
               walletAddress={address}
