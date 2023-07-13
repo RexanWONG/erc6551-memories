@@ -6,7 +6,7 @@ import abi from '../constants/ERC6551Memories.json'
 import MemoryCard from '../components/MemoryCard';
 
 const Memories = () => {
-  const contractAddress = '0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31';
+  const contractAddress = '0xfDF30D1b5fa83d5cBfF66F4e3fc64Bba7d1f8499';
   const { contract } = useContract(contractAddress, abi.abi);
   
   const { data, isLoading, error } = useContractRead(contract, "getMemories");
@@ -19,7 +19,6 @@ const Memories = () => {
     }
 
     if (!isLoading && data) {
-      console.log("Memories", data);
       setListOfMemories(data);
     }
   }, [data, isLoading, error]);

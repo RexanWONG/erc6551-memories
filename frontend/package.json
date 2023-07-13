@@ -19,6 +19,7 @@
     "nft.storage": "^7.1.0",
     "react": "^18.2",
     "react-dom": "^18.2",
+    "react-icons": "^4.10.1",
     "truncate-eth-address": "^1.0.2"
   },
   "devDependencies": {

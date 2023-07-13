@@ -24,8 +24,8 @@ const MemoryItems: React.FC<MemoryItemsProps> = ({ ownedItems }) => {
                         className='className="!md:h-96 !md:w-96 !h-full !w-full !rounded-t-2xl !rounded-b-sm !object-cover"' />
 
                     <div className="block p-4">
-                        <h3 className="font-extrabold text-[24px] text-gray-800 text-left leading-[26px] truncate">{item.metadata.name}</h3>
-                        <p className="mt-2 font-normal text-gray-500 text-left leading-[18px] truncate">{item.metadata.description}</p>
+                        <h3 className="font-extrabold text-[24px] text-gray-800 text-left leading-[26px]">{item.metadata.name}</h3>
+                        <p className="mt-2 text-gray-500 text-left leading-[18px]">{item.metadata.description}</p>
                     </div>
                 </div>
             </div>

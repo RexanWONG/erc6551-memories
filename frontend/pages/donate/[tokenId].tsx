@@ -10,7 +10,7 @@ const Donate = () => {
   const router = useRouter(); 
   const { tokenId } = router.query; 
 
-  const contractAddress = '0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31';
+  const contractAddress = '0xfDF30D1b5fa83d5cBfF66F4e3fc64Bba7d1f8499';  
 
   const address = useAddress();
   const { contract } = useContract(contractAddress, abi.abi);
@@ -53,6 +53,8 @@ const Donate = () => {
         <Navbar linkHref={`/memory/${tokenId}`} linkText={'Back to memory info'} />
         <div className='flex flex-col items-start justify-start p-10'>
             <h1 className='text-4xl font-bold'>Donate to Memory</h1>
+            <p className="text-gray-500 mt-2">Sends ether to the memory's token-bound account address.  TBAs can hold ETH and any ERC20 tokens</p>
+
 
             <form className='mt-10'>   
                 <div className='mb-10'>

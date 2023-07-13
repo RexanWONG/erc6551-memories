@@ -10,7 +10,7 @@ const AddItem = () => {
   const router = useRouter(); 
   const { tokenId } = router.query; 
 
-  const contractAddress = '0x51B483f43e8Bd7D3404B662d7f735EcA22Fc3d41';
+  const contractAddress = '0x0E45Ce20ECce7Fd93A1399430aE72D80D387fCa9';
 
   const address = useAddress();
   const { contract } = useContract(contractAddress, abi.abi);
@@ -46,6 +46,7 @@ const AddItem = () => {
         <Navbar linkHref={`/memory/${tokenId}`} linkText={'Back to memory info'}/> 
         <div className='flex flex-col items-start justify-start p-10'>
             <h1 className='text-4xl font-bold'>Add Item to Memory</h1>
+            <p className="text-gray-500 mt-2">Mints an ERC721 NFT and transfers it the memory's token-bound account address.  TBAs can hold ERC721 or ERC1155 NFTs</p>
 
             <MintNFTForm 
               contractAddress={contractAddress}
@@ -57,6 +58,7 @@ const AddItem = () => {
               {isItemMinted ? (
                 <div className='flex flex-col'>
                   <h1>Item's NFT Token ID : {Number(itemTokenId)}</h1>
+                  <p>Send to : {memoryDetails[2]}</p>
                   
                   <Web3Button
                     theme="light"
@@ -73,11 +75,11 @@ const AddItem = () => {
                 </div>
               ) : (
                 <h1>Once your item has been minted, you can add your item!</h1>
-              )}
+              )}  
             </div>
             
         </div>
-    </div>
+    </div>    
   )
 }
 

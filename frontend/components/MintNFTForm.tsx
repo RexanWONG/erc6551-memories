@@ -113,11 +113,24 @@ const createMetadataURI = async () => {
                 </div>
             </form>
             <div>
-                <button onClick={createMetadataURI} className="bg-black text-white hover:bg-neutral-600 font-light rounded-lg px-4 py-2 mt-5">
-                    Create metadata URI
-                </button>
+              <button onClick={createMetadataURI} className="bg-black text-white hover:bg-neutral-600 font-light rounded-lg px-4 py-2 mt-5">
+                  Create metadata URI
+              </button>
             </div>
             
+
+            <div className='mt-16'>
+                {isMetadataURICreated && (
+                  <Web3Button
+                      theme="light"
+                      contractAddress={contractAddress}
+                      action={() => web3ButtonFunction(inputValue.metadataURI)}
+                  >
+                      {web3ButtonText}
+                  </Web3Button>
+                
+                )}
+            </div>
         </div>
         <div className='flex flex-col'>
             <div className='flex flex-row items-center justify-center gap-10'>
@@ -141,18 +154,6 @@ const createMetadataURI = async () => {
                </div>
             ) : (
               <h1 className='text-2xl mt-5'>{inputValue.metadataURI}</h1>
-            )}
-        </div>
-        <div className='mt-16'>
-            {isMetadataURICreated && (
-              <Web3Button
-                  theme="light"
-                  contractAddress={contractAddress}
-                  action={() => web3ButtonFunction(inputValue.metadataURI)}
-              >
-                  {web3ButtonText}
-              </Web3Button>
-            
             )}
         </div>
     </div>  

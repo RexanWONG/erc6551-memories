@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Sepolia : 0x51B483f43e8Bd7D3404B662d7f735EcA22Fc3d41
+// Sepolia : 0x0E45Ce20ECce7Fd93A1399430aE72D80D387fCa9
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -18,7 +18,7 @@ contract ERC6551MemoriesItems is ERC721, ERC721Enumerable, ERC721URIStorage {
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("ERC6551-Memories-Items", "EMI") {
-        mainMemoriesContract = ERC6551Memories(0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31);
+        mainMemoriesContract = ERC6551Memories(0xfDF30D1b5fa83d5cBfF66F4e3fc64Bba7d1f8499);
     }
 
     mapping(address => uint256) public addressToTokenId;

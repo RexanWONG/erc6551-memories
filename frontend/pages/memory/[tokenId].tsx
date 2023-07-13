@@ -9,15 +9,14 @@ import itemsAbi from "../../constants/ERC6551MemoriesItems.json";
 import Navbar from '../../components/Navbar';
 import Loading from "../../components/Loading";
 import MemoryInfoSection from '../../components/MemoryInfoSection';
-import MemoryCard from '../../components/MemoryCard';
 import MemoryItems from '../../components/MemoryItems';
 
 const Memory = () => {
   const router = useRouter();
   const { tokenId } = router.query; 
 
-  const memoriesContractAddress = '0x4Db40DC251EF1Ffd0BeA25CC7Df1D21Efd55Ce31';
-  const itemsContractAddress = '0x51B483f43e8Bd7D3404B662d7f735EcA22Fc3d41';
+  const memoriesContractAddress = '0xfDF30D1b5fa83d5cBfF66F4e3fc64Bba7d1f8499';
+  const itemsContractAddress = '0x0E45Ce20ECce7Fd93A1399430aE72D80D387fCa9';
 
   const { contract : memoriesContract } = useContract(memoriesContractAddress, memoriesAbi.abi);
   const { contract : itemsContract } = useContract(itemsContractAddress, itemsAbi.abi);
@@ -54,10 +53,13 @@ const Memory = () => {
                     className="!md:h-96 !md:w-96 !h-full !max-h-[800px] !w-full !max-w-[800px] !rounded-lg !object-cover"
                 />
                 
-                <h1 className="text-3xl text-gray-800 font-extrabold text-left leading-[26px] mt-3">
-                  {nft.metadata.name}{" "}
-                  <span className="text-gray-500 text-[20px] font-light">by {truncateEthAddress(memoryDetails[1])}</span>
-                </h1>
+                <div className='flex flex-row items-center justify-center gap-2 mt-3'>  
+                  <h1 className="text-3xl text-gray-800 font-extrabold text-left leading-[26px]">
+                    {nft.metadata.name}
+                  </h1>
+                  <span className="text-gray-500 text-[20px] font-light">by {truncateEthAddress(memoryDetails[1])}</span> 
+                </div>  
+                
             </div> 
 
             <MemoryInfoSection 
@@ -70,7 +72,7 @@ const Memory = () => {
             />
         </div>
       
-        <h1 className='text-4xl font-bold mt-16 p-10'>View Items</h1>
+        <h1 className='text-4xl font-bold mt-12 p-10'>View Items</h1>
 
         <MemoryItems ownedItems={ownedItems as any} />
     </div>
